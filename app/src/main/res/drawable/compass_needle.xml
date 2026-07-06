@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="220dp" android:height="220dp"
+    android:viewportWidth="220" android:viewportHeight="220">
+    <!-- gold needle pointing up (north/kible reference), tip highlighted -->
+    <path android:fillColor="#D4AF37" android:pathData="M110,20 L125,110 L110,95 L95,110 Z"/>
+    <path android:fillColor="#4A6656" android:pathData="M110,200 L120,120 L110,132 L100,120 Z"/>
+    <path android:fillColor="#D4AF37" android:pathData="M110,100m-10,0a10,10 0,1,1 20,0a10,10 0,1,1 -20,0"/>
+</vector>

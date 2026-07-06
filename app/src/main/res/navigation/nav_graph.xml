@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ezanvakti.app.ui.home.HomeFragment"
+        android:label="Ana Sayfa"
+        tools:layout="@layout/fragment_home"
+        xmlns:tools="http://schemas.android.com/tools">
+        <action
+            android:id="@+id/action_home_to_aylik"
+            app:destination="@id/aylikFragment" />
+        <action
+            android:id="@+id/action_home_to_ramazan"
+            app:destination="@id/ramazanFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/vakitlerFragment"
+        android:name="com.ezanvakti.app.ui.vakitler.VakitlerFragment"
+        android:label="Vakitler"
+        tools:layout="@layout/fragment_vakitler"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+    <fragment
+        android:id="@+id/kibleFragment"
+        android:name="com.ezanvakti.app.ui.kible.KibleFragment"
+        android:label="Kıble"
+        tools:layout="@layout/fragment_kible"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+    <fragment
+        android:id="@+id/ayarlarFragment"
+        android:name="com.ezanvakti.app.ui.ayarlar.AyarlarFragment"
+        android:label="Ayarlar"
+        tools:layout="@layout/fragment_ayarlar"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+    <fragment
+        android:id="@+id/aylikFragment"
+        android:name="com.ezanvakti.app.ui.aylik.AylikFragment"
+        android:label="Aylık Vakitler"
+        tools:layout="@layout/fragment_aylik"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+    <fragment
+        android:id="@+id/ramazanFragment"
+        android:name="com.ezanvakti.app.ui.ramazan.RamazanFragment"
+        android:label="Ramazan Sayacı"
+        tools:layout="@layout/fragment_ramazan"
+        xmlns:tools="http://schemas.android.com/tools" />
+
+</navigation>

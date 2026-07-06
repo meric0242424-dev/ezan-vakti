@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ezan Vakti</string>
+    <string name="tagline">Vaktinde Huzur, Ezanla Başlar</string>
+
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_vakitler">Vakitler</string>
+    <string name="nav_kible">Qibla</string>
+    <string name="nav_ayarlar">Ayarlar</string>
+
+    <string name="imsak">İmsak</string>
+    <string name="gunes">Güneş</string>
+    <string name="ogle">Öğle</string>
+    <string name="ikindi">İkindi</string>
+    <string name="aksam">Akşam</string>
+    <string name="yatsi">Yatsı</string>
+
+    <string name="vaktine_kalan">Vaktine Kalan</string>
+    <string name="aylik_vakitler">Aylık Vakitler</string>
+    <string name="kible_pusulasi">Kıble Pusulası</string>
+    <string name="ramazan_sayaci">Ramazan Sayacı</string>
+
+    <string name="ezan_ayarlari">Ezan Ayarları</string>
+    <string name="bildirim_ve_uyarilar">Bildirim ve Uyarılar</string>
+    <string name="genel">Genel</string>
+    <string name="bildirim_goster">Bildirim Göster</string>
+    <string name="bildirim_aciklama">Ezan saatinde bildirim göster</string>
+    <string name="titresim">Titreşim</string>
+    <string name="titresim_aciklama">Ezan saatinde titreşim</string>
+    <string name="otomatik_konum">Otomatik Konum</string>
+    <string name="otomatik_konum_aciklama">Konumunuzu kullanarak vakitleri getir</string>
+    <string name="vakitleri_guncelle">Vakitleri Güncelle</string>
+
+    <string name="kible_derece_format">Kıble: %d°</string>
+    <string name="ramazana_kalan">Ramazana Kalan Süre</string>
+    <string name="bugunku_imsak">Bugünkü İmsak</string>
+    <string name="bugunku_iftar">Bugünkü İftar</string>
+
+    <string name="konum_izni_gerekli">Konum izni verilmeden otomatik vakit bulunamaz</string>
+    <string name="yukleniyor">Yükleniyor…</string>
+    <string name="hata_olustu">Bir hata oluştu, tekrar deneyin</string>
+</resources>
