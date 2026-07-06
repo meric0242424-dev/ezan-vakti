@@ -3,14 +3,16 @@ package com.ezanvakti.app.util
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.math.toDegrees
-import kotlin.math.toRadians
+import kotlin.math.PI
 
 object QiblaCalculator {
 
     // Coordinates of the Kaaba, Mecca
     private const val KAABA_LAT = 21.4225
     private const val KAABA_LON = 39.8262
+
+    private fun toRadians(deg: Double): Double = deg * PI / 180.0
+    private fun toDegrees(rad: Double): Double = rad * 180.0 / PI
 
     /**
      * Returns the compass bearing (0-360, 0 = true north) from the given
