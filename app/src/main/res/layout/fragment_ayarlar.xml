@@ -59,6 +59,41 @@
 
             <include layout="@layout/row_setting_switch" android:id="@+id/row_show_notification" />
             <include layout="@layout/row_setting_switch" android:id="@+id/row_vibration" />
+
+            <LinearLayout
+                android:id="@+id/row_ezan_sesi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ezan Sesi"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sesi dinlemek veya değiştirmek için dokunun"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_arrow_forward" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Genel -->
