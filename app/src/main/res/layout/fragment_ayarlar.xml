@@ -1,156 +1,125 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_dark_green">
+package com.ezanvakti.app.ui.ayarlar
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.ezanvakti.app.R
+import com.ezanvakti.app.data.local.PrefsManager
+import com.ezanvakti.app.databinding.FragmentAyarlarBinding
+import com.ezanvakti.app.databinding.RowSettingSwitchBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/nav_ayarlar"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp" />
+class AyarlarFragment : Fragment() {
 
-        <!-- Ezan Ayarları -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ezan_ayarlari"
-            android:textColor="@color/gold"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+    private var _binding: FragmentAyarlarBinding? = null
+    private val binding get() = _binding!!
 
-        <LinearLayout
-            android:id="@+id/prayer_toggles_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="4dp"
-            android:layout_marginBottom="20dp" />
+    private lateinit var prefs: PrefsManager
 
-        <!-- Bildirim ve Uyarılar -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bildirim_ve_uyarilar"
-            android:textColor="@color/gold"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+    private val prayerLabels = listOf(
+        "imsak" to "İmsak Ezanı",
+        "gunes" to "Güneş Ezanı",
+        "ogle" to "Öğle Ezanı",
+        "ikindi" to "İkindi Ezanı",
+        "aksam" to "Akşam Ezanı",
+        "yatsi" to "Yatsı Ezanı"
+    )
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="4dp"
-            android:layout_marginBottom="20dp">
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAyarlarBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-            <include layout="@layout/row_setting_switch" android:id="@+id/row_show_notification" />
-            <include layout="@layout/row_setting_switch" android:id="@+id/row_vibration" />
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        prefs = PrefsManager(requireContext())
 
-            <LinearLayout
-                android:id="@+id/row_ezan_sesi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="14dp">
+        setupPrayerToggles()
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+        binding.rowShowNotification.rowTitle.text = getString(R.string.bildirim_goster)
+        binding.rowShowNotification.rowSubtitle.text = getString(R.string.bildirim_aciklama)
+        binding.rowShowNotification.rowSubtitle.visibility = View.VISIBLE
+        binding.rowShowNotification.rowSwitch.isChecked = prefs.showNotification
+        binding.rowShowNotification.rowSwitch.setOnCheckedChangeListener { _, checked ->
+            prefs.showNotification = checked
+        }
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ezan Sesi"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
+        binding.rowVibration.rowTitle.text = getString(R.string.titresim)
+        binding.rowVibration.rowSubtitle.text = getString(R.string.titresim_aciklama)
+        binding.rowVibration.rowSubtitle.visibility = View.VISIBLE
+        binding.rowVibration.rowSwitch.isChecked = prefs.vibrationEnabled
+        binding.rowVibration.rowSwitch.setOnCheckedChangeListener { _, checked ->
+            prefs.vibrationEnabled = checked
+        }
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sesi dinlemek veya değiştirmek için dokunun"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+        binding.rowAutoLocation.rowTitle.text = getString(R.string.otomatik_konum)
+        binding.rowAutoLocation.rowSubtitle.text = getString(R.string.otomatik_konum_aciklama)
+        binding.rowAutoLocation.rowSubtitle.visibility = View.VISIBLE
+        binding.rowAutoLocation.rowSwitch.isChecked = prefs.autoLocationEnabled
+        binding.rowAutoLocation.rowSwitch.setOnCheckedChangeListener { _, checked ->
+            prefs.autoLocationEnabled = checked
+        }
 
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_arrow_forward" />
-            </LinearLayout>
-        </LinearLayout>
+        binding.rowEzanSesi.setOnClickListener {
+            openChannelSoundSettings()
+        }
 
-        <!-- Genel -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/genel"
-            android:textColor="@color/gold"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+        updateLastUpdateText()
+        binding.rowUpdateNow.setOnClickListener {
+            updateLastUpdateText()
+        }
+    }
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_card"
-            android:padding="4dp">
+    private fun setupPrayerToggles() {
+        binding.prayerTogglesContainer.removeAllViews()
+        prayerLabels.forEach { (key, label) ->
+            val rowBinding = RowSettingSwitchBinding.inflate(layoutInflater, binding.prayerTogglesContainer, false)
+            rowBinding.rowTitle.text = label
+            rowBinding.rowSwitch.isChecked = prefs.isPrayerEnabled(key)
+            rowBinding.rowSwitch.setOnCheckedChangeListener { _, checked ->
+                prefs.setPrayerEnabled(key, checked)
+            }
+            binding.prayerTogglesContainer.addView(rowBinding.root)
+        }
+    }
 
-            <include layout="@layout/row_setting_switch" android:id="@+id/row_auto_location" />
+    private fun updateLastUpdateText() {
+        val ts = prefs.lastUpdateTimestamp
+        binding.textLastUpdate.text = if (ts == 0L) {
+            "Henüz güncellenmedi"
+        } else {
+            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+            "Son güncelleme: ${sdf.format(Date(ts))}"
+        }
+    }
 
-            <LinearLayout
-                android:id="@+id/row_update_now"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="14dp">
+    private fun openChannelSoundSettings() {
+        try {
+            val intent = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                android.content.Intent(android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                    putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                    putExtra(android.provider.Settings.EXTRA_CHANNEL_ID, com.ezanvakti.app.EzanVaktiApp.CHANNEL_ID)
+                }
+            } else {
+                android.content.Intent(
+                    android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    android.net.Uri.parse("package:${requireContext().packageName}")
+                )
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            // no-op
+        }
+    }
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/vakitleri_guncelle"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/text_last_update"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="—"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_refresh" />
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
