@@ -70,6 +70,10 @@ class AyarlarFragment : Fragment() {
             openChannelSoundSettings()
         }
 
+        binding.rowTestEzan.setOnClickListener {
+            testEzanSound()
+        }
+
         updateLastUpdateText()
         binding.rowUpdateNow.setOnClickListener {
             updateLastUpdateText()
@@ -99,6 +103,39 @@ class AyarlarFragment : Fragment() {
         }
     }
 
+    private var testMediaPlayer: android.media.MediaPlayer? = null
+
+    private fun testEzanSound() {
+        val context = requireContext()
+
+        try {
+            testMediaPlayer?.release()
+            testMediaPlayer = android.media.MediaPlayer.create(context, R.raw.ezan)
+            testMediaPlayer?.setOnCompletionListener { it.release() }
+            testMediaPlayer?.start()
+        } catch (e: Exception) {
+            android.widget.Toast.makeText(context, "Ses dosyası çalınamadı: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
+        }
+
+        try {
+            val builder = androidx.core.app.NotificationCompat.Builder(context, com.ezanvakti.app.EzanVaktiApp.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle("Test Bildirimi")
+                .setContentText("Bu bir test bildirimidir — ezan sesini duyman gerekiyor")
+                .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+
+            if (androidx.core.content.ContextCompat.checkSelfPermission(
+                    context, android.Manifest.permission.POST_NOTIFICATIONS
+                ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+            ) {
+                androidx.core.app.NotificationManagerCompat.from(context).notify(9999, builder.build())
+            }
+        } catch (e: Exception) {
+            // ignore
+        }
+    }
+
     private fun openChannelSoundSettings() {
         val context = requireContext()
         try {
@@ -125,6 +162,8 @@ class AyarlarFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        testMediaPlayer?.release()
+        testMediaPlayer = null
         _binding = null
     }
 }
