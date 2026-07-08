@@ -66,10 +66,12 @@ class AyarlarFragment : Fragment() {
             prefs.autoLocationEnabled = checked
         }
 
+        binding.rowEzanSesi.setOnClickListener {
+            openChannelSoundSettings()
+        }
+
         updateLastUpdateText()
         binding.rowUpdateNow.setOnClickListener {
-            // A simple, explicit way to force a refresh: user re-opens Ana Sayfa
-            // which always re-syncs; here we just refresh the timestamp label.
             updateLastUpdateText()
         }
     }
@@ -94,6 +96,30 @@ class AyarlarFragment : Fragment() {
         } else {
             val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
             "Son güncelleme: ${sdf.format(Date(ts))}"
+        }
+    }
+
+    private fun openChannelSoundSettings() {
+        val context = requireContext()
+        try {
+            val intent = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                android.content.Intent(android.provider.Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                    putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName)
+                    putExtra(android.provider.Settings.EXTRA_CHANNEL_ID, com.ezanvakti.app.EzanVaktiApp.CHANNEL_ID)
+                }
+            } else {
+                android.content.Intent(
+                    android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    android.net.Uri.parse("package:${context.packageName}")
+                )
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            android.widget.Toast.makeText(
+                context,
+                "Ses ayarı ekranı açılamadı: ${e.message}",
+                android.widget.Toast.LENGTH_LONG
+            ).show()
         }
     }
 
