@@ -39,7 +39,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             repository.getToday(location).fold(
                 onSuccess = { day ->
                     _state.value = HomeState.Success(location, day)
-                    NotificationScheduler.scheduleForToday(getApplication(), day)
+                    NotificationScheduler.scheduleForOffset(getApplication(), day, 0)
+                    repository.getForOffset(location, 1).onSuccess { tomorrow ->
+                        NotificationScheduler.scheduleForOffset(getApplication(), tomorrow, 1)
+                    }
                 },
                 onFailure = {
                     _state.value = HomeState.Error(it.message ?: "Bilinmeyen hata")
@@ -58,7 +61,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             prefsManager.saveLocation(fresh)
             fresh
         } else {
-            cached // fall back to last known location so app still works offline
+            cached
         }
     }
 }
